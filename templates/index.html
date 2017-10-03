@@ -6,32 +6,29 @@
                 <script type="text/javascript">
                         $(document).ready(function() {
                                 $("#add").click(function() {
-                                        var ticker = $('input[name="st"]').val();
-                                        $.post("add_stock", {"ticker": ticker}, function(data) {
-                                                // Clear all p from div class=stocks
-                                                $("div.stocks p").remove();
-                                                stocks = data.split(",");
-                                                // Append p to div class=stocks
-                                                for (var i = 0; i < stocks.length; i++) {
-                                                        $("div.stocks").append("<p>"+stocks[i]+"</p>");
-                                                }
-                                        });
+                                        var user = $('input[name="st"]').val();
+                                        $.post("add_user", {"user": user});
+				});
+				$("#exist").click(function() {
+                                        var user = $('input[name="ab"]').val();
+                                        $.post("check_username", {"exist": user}, function(data) {
+					    alert(data);
+					});
+	
                                 });
                         });
                 </script>
         </head>
 
         <body>
-                <label><b>Stock Ticker</b></label><br>
-                <input type="text" placeholder="stock ticker" name="st" required><br>
-                <input type="button" id="add" value="Add To Portfolio">
+                <label><b>Find Username</b></label><br>
+                <input type="text" placeholder="user name" name="st" required><br>
+                <input type="button" id="add" value="Add To Database"><br>
 
-                <div class="stocks">
-                        <h2>Stocks</h2>
-                        {% for stock in stocks %}
-                        <p>{{stock}}</p>
-                        {% endfor %}
-                </div>
+		<input type="text" placeholder = "exists" name = "ab" required><br>
+		<input type="button" id ="exist" value="Check Existence">
+		
+		
         </body>
 </html>
 

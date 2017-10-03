@@ -21,31 +21,34 @@ mongo = PyMongo(app)
 @app.route("/index")
 def index():
     usernames = mongo.db.usernames # create a collection called usernames
-    output = [username["ticker"] for username in usernames.find()]
+    output = [username["user"] for username in usernames.find()]
     return render_template("index.html", usernames=output)
 
 @app.route("/add_user", methods=["POST"])
 def add_user():
     usernames = mongo.db.usernames
     user = request.form["user"]
+
     ticker_id = usernames.insert({"user": user})
-
-    for username in usernames.find():
-	if user == username:
-	    continue;
-	else:
-	    ticker_id = usernames.insert({"user": user")
+    return "SUCCESS"
     
-
-def check_username(s):
+@app.route("/check_username", methods=["POST"])
+def check_username():
+    user = request.form["exist"]
     usernames = mongo.db.usernames
-    for username in usernames.find():
-        if s == username:
+    for username in usernames.find({}):
+        if user == username["user"]:
             return "Username Exists!"
     return "Username does not exist"
 
+def check_user(u):
+    usernames = mongo.db.usernames
+    for user in usernames.find():
+        if u == user:
+            return True
+    return False
 
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=8014)
