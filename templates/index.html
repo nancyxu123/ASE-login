@@ -1,0 +1,37 @@
+<html>
+        <head>
+                <link rel="stylesheet" type="text/css" href="static/css/styles.css">
+                <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                <!-- <script type="text/javascript" src="static/js/script.js"></script> -->
+                <script type="text/javascript">
+                        $(document).ready(function() {
+                                $("#add").click(function() {
+                                        var ticker = $('input[name="st"]').val();
+                                        $.post("add_stock", {"ticker": ticker}, function(data) {
+                                                // Clear all p from div class=stocks
+                                                $("div.stocks p").remove();
+                                                stocks = data.split(",");
+                                                // Append p to div class=stocks
+                                                for (var i = 0; i < stocks.length; i++) {
+                                                        $("div.stocks").append("<p>"+stocks[i]+"</p>");
+                                                }
+                                        });
+                                });
+                        });
+                </script>
+        </head>
+
+        <body>
+                <label><b>Stock Ticker</b></label><br>
+                <input type="text" placeholder="stock ticker" name="st" required><br>
+                <input type="button" id="add" value="Add To Portfolio">
+
+                <div class="stocks">
+                        <h2>Stocks</h2>
+                        {% for stock in stocks %}
+                        <p>{{stock}}</p>
+                        {% endfor %}
+                </div>
+        </body>
+</html>
+
